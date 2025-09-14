@@ -38,10 +38,9 @@ CREATE TABLE IF NOT EXISTS Roles (
     role_name VARCHAR(100) NOT NULL
 );
 
--- 4. Users Table
+-- 4. Users Table (created before UserDetails, without full_name)
 CREATE TABLE IF NOT EXISTS Users (
     user_id SERIAL PRIMARY KEY,
-    full_name VARCHAR(255) NOT NULL,
     branch_id INT NOT NULL,
     role_id INT,
     CONSTRAINT fk_user_branch
@@ -54,15 +53,25 @@ CREATE TABLE IF NOT EXISTS Users (
         ON DELETE SET NULL
 );
 
--- 5. UserDetails Table (1-to-1 with Users)
+-- 5. UserDetails Table (references Users)
 CREATE TABLE IF NOT EXISTS UserDetails (
     user_id INT PRIMARY KEY, -- same as Users.user_id
+    first_name VARCHAR(100),
+    middle_name VARCHAR(100),
+    last_name VARCHAR(100),
     email VARCHAR(255),
     contact_no VARCHAR(20),
     dob DATE,
-    address_details TEXT,
+    gender VARCHAR(10),
+    profile_picture_url VARCHAR(255),
+    emergency_contact VARCHAR(255),
+    nationality VARCHAR(100),
+    joining_date DATE,
+    is_active BOOLEAN,
     CONSTRAINT fk_user_details
         FOREIGN KEY (user_id)
         REFERENCES Users(user_id)
         ON DELETE CASCADE
 );
+
+
